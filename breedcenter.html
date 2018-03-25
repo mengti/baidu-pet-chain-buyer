@@ -155,11 +155,16 @@
 		    </div>
 		  </div>
 		  <div class="options-right" style="width:500px">
-            <div class="mb-3">
+            <div class="mb-3" style="width:1000px">
               <h5>选两个来交配</h5>
-              <label>价格：<font style="color:#F76707">500</font></label><label style="margin-left: 20px;">繁育时长：<font style="color:#F76707">14小时</font></label>
-              <button style="cursor:pointer;" type="button" id="buyVerifyRefresh" class="btn btn-light"><span data-feather="refresh-cw"></span></button>
-              <input style="width:120px;" type="text" id="buyVerifyCode">
+              <label>价格：<font id="breedAmount" style="color:#F76707">0</font></label>
+              <label style="margin-left: 20px;">繁育时长：<font id="breedTime" style="color:#F76707">0分钟</font></label>
+              <img style="width:80px; height: 30px;" src="" id="breedVerifyImage" alt="点击刷新">
+			  <input style="width:120px;" type="text" id="breedVerifyCode"/>
+			  <input type="hidden" id="breedVerifySeed" value=""/>
+              <input type="hidden" id="breedVerifyTime" value=""/>
+              <input type="hidden" id="myPetId" value=""/>
+              <input type="hidden" id="taPetId" value=""/>
               <button type="button" id="breedBtn" class="btn btn-success btn-sm">交配</button>
             </div>
 		    <div id="taPetDetail" style="width:450px; height:400px; background-color:#eee">
@@ -195,7 +200,7 @@
                   </ul>
               </div>
             </div>
-            <div id="myPetDetail" style="width:450px; height:400px; margin-top:50px; background-color:#eee"">
+            <div id="myPetDetail" style="width:450px; height:400px; margin-top:50px; background-color:#eee">
               <div style="width:100%; background-color:#FFFDE7">
 				<img src="https://blockchain-pet-online.cdn.bcebos.com/PET_SVG_4af3fabe3561f225782f22934356a735" style="width: 29.314rem; height: 7.9855rem;"/>
                 <div style="position: relative; top: -1px; display: inline-block;">
@@ -233,45 +238,7 @@
       </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="buyModalCenter" role="dialog" aria-labelledby="buyModalCenterTitle" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="buyModalLongTitle">低价买狗</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div id="buyModalPetDetail"></div>
-            <form class="form-inline">
-                <div class="form-group mr-2">
-                  <label for="recipient-name" class="col-form-label">输入验证码：</label>
-                </div>
-                <div class="form-group mr-2">
-                  <input style="width:120px;" type="text" class="form-control" id="buyVerifyCode">
-                </div>
-                <div class="form-group mr-2">
-                  <img style="width:100px; height: 40px;" src="" id="buyVerifyImage" alt="">
-                </div>
-                <div class="form-group mr-2">
-                  <button style="cursor:pointer;" type="button" id="buyVerifyRefresh" class="btn btn-light"><span data-feather="refresh-cw"></span></button>
-                </div>
-                <div class="form-group" style="display: none;">
-                  <input type="hidden" name="buy-pet-id" id="buyPetId" value="">
-                  <input type="hidden" name="buy-verify-seed" id="buyVerifySeed" value="">
-                  <input type="hidden" name="buy-valid-code" id="buyValidCode" value="">
-                  <input type="hidden" name="buy-pet-amount" id="buyPetAmount" value="">
-                </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" style="cursor: pointer;" id="buyModalSubmit" class="btn btn-success">立即购买</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <iframe id="breedFrame" src="https://pet-chain.baidu.com/chain/chooseMyDog?validCode=&appId=1&tpl="></iframe>
     
     <script type="text/javascript" src="js/libs/jquery.min.js"></script>
     <script type="text/javascript" src="js/libs/feather.min.js"></script>
@@ -283,6 +250,7 @@
     <script type="text/javascript" src="js/components/utils.js"></script>
     <script type="text/javascript" src="js/components/configurator.js"></script>
     <script type="text/javascript" src="js/components/alert.js"></script>
+	<script type="text/javascript" src="js/components/captchagen.js"></script>
     <script type="text/javascript" src="js/components/bc.js"></script>
 	<script type="text/javascript" src="js/components/center.js"></script>
     <script type="text/javascript" src="js/components/grid.js"></script>

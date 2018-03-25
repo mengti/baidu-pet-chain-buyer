@@ -102,9 +102,13 @@ $(function(){
 
         var pet = $.parseJSON($(this).parent().parent().attr("data"));
 
-        Center.getPetById(pet.petId, "#petDetail .modal-body");
-
-        $('#petDetail').modal('show');
+        Center.getPetById({
+            petId : pet.petId, 
+            detailSelector : "#petDetail .modal-body", 
+            callback : function() {
+                $('#petDetail').modal('show');
+            }
+        });
     });
 
     $("#prePage").click(function() {

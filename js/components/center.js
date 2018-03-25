@@ -11,7 +11,7 @@ var Center = {
         GetPetById: 'https://pet-chain.baidu.com/data/pet/queryPetById'
     },
 
-    getPetById : function(petId, selector) {
+    getPetById : function(config) {
         $.ajax({
             type: 'POST',
             url: Center.ApiUrl.GetPetById,
@@ -19,7 +19,7 @@ var Center = {
             data: JSON.stringify({
                 "appId":1,
                 "nounce":null,
-                "petId" : petId,
+                "petId" : config.petId,
                 "requestId": new Date().getTime(),
                 "timeStamp":null,
                 "token":null,
@@ -68,7 +68,19 @@ var Center = {
 
                 detail += '</ul></div>';
 
-                $(selector).html(detail);
+                $(config.detailSelector).html(detail);
+
+				if (config.petIdSelector) {
+					$(config.petIdSelector).val(petInfo.petId);
+				}
+
+				if (config.amountSelector) {
+					$(config.amountSelector).html(petInfo.amount);
+				}
+
+                if (typeof config.callback == 'function') {
+                    config.callback();
+                }
             }
         });
     },

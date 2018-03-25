@@ -1,15 +1,13 @@
 /*
- * @author t@tabalt.net
+ * @author sgsp088088
  */
-
 var BreedCenter = {
-    TryToBuyChain: {},
-    TryedBuyMap: {},
-    Buying: false,
-
     ApiUrl: {
-        BreedCenterList: 'https://pet-chain.baidu.com/data/market/breed/pets',
-        MyBreedPetList : 'https://pet-chain.baidu.com/data/breed/petList'
+        BreedCenterList : 'https://pet-chain.baidu.com/data/market/breed/pets',
+        MyBreedPetList : 'https://pet-chain.baidu.com/data/breed/petList',
+        Choose : 'https://pet-chain.baidu.com/data/txn/choose',
+        BreedExtInfo : 'https://pet-chain.baidu.com/data/breed/extInfo',
+        CreateBreed : 'https://pet-chain.baidu.com/data/txn/createBreed'
     },
 
     breedCenterList: function(pageNo) {
@@ -27,7 +25,7 @@ var BreedCenter = {
                 "lastRareDegree":null,
                 "requestId": new Date().getTime(),
                 "appId":1,
-                "filterCondition" : "{}",
+                "filterCondition" : '{"1":"3","3":"0-1"}',
                 "lastAmount" : "",
                 "lastRareDegree" : "",
                 "type" : null,
@@ -124,6 +122,95 @@ var BreedCenter = {
                         BreedCenter.myBreedPetList(pageNo);
                     }, 1000);
                 }
+            }
+        });
+    },
+
+    choose : function(petId, amount, callback) {
+        $.ajax({
+            type: 'POST',
+            url: BreedCenter.ApiUrl.Choose,
+            contentType : 'application/json',
+            data: JSON.stringify({
+                "amount" : amount,
+                "appId":1,
+                "petId" : petId,
+                "nounce":null,
+                "requestId": new Date().getTime(),
+                "timeStamp":null,
+                "token":null,
+                "tpl":""
+            }),
+            success:function(res){
+               if (res.errorNo == "00") {
+                   if (typeof callback == 'function') {
+                       callback();
+                   }
+               } else {
+                   Alert.Error(res.errorMsg, 2);
+               }
+            }
+        });
+    },
+
+    getBreedExtInfo : function(taPetId, myPetId, amount, breedTimeSelector) {
+        $.ajax({
+            type: 'POST',
+            url: BreedCenter.ApiUrl.BreedExtInfo,
+            contentType : 'application/json',
+            data: JSON.stringify({
+                "amount" : amount,
+                "appId":1,
+                "fatherPetId" : taPetId,
+                "motherPetId" : myPetId,
+                "nounce":null,
+                "requestId": new Date().getTime(),
+                "timeStamp":null,
+                "token":null,
+                "tpl":""
+            }),
+            success:function(res){
+               if (res.errorNo == "00") {
+                   $(breedTimeSelector).html(res.data.breedingInterval);
+               } else {
+                   Alert.Error("获取配种信息失败！！", 2);
+               }
+            }
+        });
+    },
+    
+    createBreed : function(taPetId, myPetId, amount, code, seed, callback) {
+        $.ajax({
+            type: 'POST',
+            url: BreedCenter.ApiUrl.CreateBreed,
+            contentType : 'application/json',
+            data: JSON.stringify({
+                "amount" : amount,
+                "appId":1,
+                "captcha" : code,
+                "petId" : taPetId,
+                "senderPetId" : myPetId,
+                "nounce":null,
+                "seed" : seed,
+                "requestId": new Date().getTime(),
+                "timeStamp":null,
+                "token":null,
+                "tpl":"",
+                "validCode" : ""
+            }),
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Origin", "https://pet-chain.baidu.com");
+            },
+            success:function(res){
+               if (res.errorNo == "00") {
+                   Alert.Success("配种成功！！", 2);
+
+                   if (typeof callback == 'function') {
+                       callback();
+                   }
+               } else {
+                   Alert.Error(res.errorMsg, 2);
+               }
             }
         });
     }
